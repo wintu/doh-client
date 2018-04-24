@@ -19,8 +19,13 @@ RubyDNS::run_server(INTERFACES) do
     uri.query = { ct: 'application/dns-json', name: t.question.to_s, type: type }.to_param
     begin
       answers = JSON.parse(uri.read)['Answer']
-      puts "Req: #{t.question.to_s} Type: #{type} Ans: #{answers.last['data']}" if answers.present?
-      answers.present? ? t.respond!(answers.last['data']) : t.fail!(:NXDomain)
+      if answers.present?
+        t.respond!(answers.last['data'])
+        puts "Req: #{t.question.to_s} Type: #{type} Ans: #{answers.last['data']}"
+      else
+        t.fail!(:NXDomain)
+        puts "!!CANNOT RESOLVE!! Req: #{t.question.to_s} Type: #{type}"
+      end
     rescue
       t.fail!(:NXDomain)
     end
