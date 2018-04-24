@@ -4,4 +4,6 @@
 
 ## Installation
 このプログラムはRubyで書かれているため、Rubyが実行できる環境下で以下のコマンドを実行してください。 
-```bundle install && sudo bundle exec ruby server.rb```
+```
+bundle install && sudo bundle exec ruby server.rb
+```
