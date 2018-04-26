@@ -4,7 +4,7 @@ require 'uri'
 require 'pry'
 require 'active_support'
 require 'active_support/core_ext'
-require 'open-uri'
+require 'curb'
 
 INTERFACES = [
   [:udp, '0.0.0.0', 53],
@@ -18,7 +18,7 @@ RubyDNS::run_server(INTERFACES) do
     uri = URI.parse('https://cloudflare-dns.com/dns-query')
     uri.query = { ct: 'application/dns-json', name: t.question.to_s, type: type }.to_param
     begin
-      answers = JSON.parse(uri.read)['Answer']
+      answers = JSON.parse(Curl.get(uri.to_s).body_str)['Answer']
       if answers.present?
         t.respond!(answers.last['data'])
         puts "Req: #{t.question.to_s} Type: #{type} Ans: #{answers.last['data']}"
