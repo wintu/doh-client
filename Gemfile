@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
-gem 'rubydns'
 gem 'pry'
-gem 'activesupport'
+
+gem 'async-dns'
+gem 'async-http'
