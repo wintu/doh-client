@@ -37,8 +37,7 @@ class Server < Async::DNS::Server
     answers = JSON.parse(response.read)['Answer']
     
     if answers.any?
-      # this is a hack...
-      transaction.fail!(:NoError)
+      transaction.append_question!
       
       answers.each do |answer|
         if klass = Resolv::DNS::Resource.get_class(answer["type"], resource_class::ClassValue)

@@ -6,5 +6,5 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'pry'
 
-gem 'async-dns'
+gem 'async-dns', '~> 1.2'
 gem 'async-http'
