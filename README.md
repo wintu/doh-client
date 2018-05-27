@@ -17,7 +17,7 @@ bundle exec ruby -d server.rb
 ```
 
 ## Change Log
-Ruby DNSライブラリの開発者(@ioquatix)さんが(async-http)[https://github.com/socketry/async-http]と(async-dns)[https://github.com/socketry/async-dns]を使ってパフォーマンスチューニングを行ってくれました。
+Ruby DNSライブラリの開発者(@ioquatix)さんが[async-http](https://github.com/socketry/async-http)と[async-dns](https://github.com/socketry/async-dns)を使ってパフォーマンスチューニングを行ってくれました。
 ありがとうございます！！ 詳しくはプルリクみて下さい！
 
 ## LICENSE
