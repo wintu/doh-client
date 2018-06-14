@@ -40,13 +40,15 @@ class Server < Async::DNS::Server
       transaction.append_question!
       
       answers.each do |answer|
-        klass = Resolv::DNS::Resource.get_class(answer["type"], resource_class::ClassValue)
-        if klass < Resolv::DNS::Resource::DomainName
-          resource = klass.new(Resolv::DNS::Name.create(answer["data"]))
-        else
-          resource = klass.new(answer["data"])
+        if klass = Resolv::DNS::Resource.get_class(answer["type"], resource_class::ClassValue)
+          if klass < Resolv::DNS::Resource::DomainName
+            resource = klass.new(Resolv::DNS::Name.create(answer["data"]))
+          else
+            resource = klass.new(answer["data"])
+          end
+          
+          transaction.response.add_answer(answer["name"], answer["TTL"], resource)
         end
-        transaction.response.add_answer(answer["name"], answer["TTL"], resource)
       end
     else
       transaction.fail!(:NXDomain)
