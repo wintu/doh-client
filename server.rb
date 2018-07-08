@@ -23,8 +23,7 @@ class Server < Async::DNS::Server
   end
   
   def process(name, resource_class, transaction)
-    type = resource_class.to_s
-    type.slice!(0..26)
+    type = resource_class.to_s.split('::').last
     
     # This generates the appropriate request URL:
     reference = Async::HTTP::Reference.parse(@endpoint.url.path, {
@@ -32,11 +31,16 @@ class Server < Async::DNS::Server
       name: name,
       type: type,
     })
+
+    if resource_class.to_s.split('::')[3] == 'Generic'
+      transaction.fail!(:NXDomain)
+      return
+    end
     
     response = @client.get(reference)
     answers = JSON.parse(response.read)['Answer']
     
-    if answers.any?
+    if !answers.nil? && answers.any?
       transaction.append_question!
       
       answers.each do |answer|
